@@ -114,7 +114,7 @@ async function generateDraft(req) {
   const msg = await client.messages.create({
     model: MODEL, max_tokens: 1024,
     system: `You are MailPilot, an expert email ghostwriter. You write emails that sound natural, human, and contextually appropriate — never robotic or templated.\n\nRules:\n- Match the ${tone} tone precisely\n- Write in ${lang}\n- Use the thread context to craft a relevant, on-point reply\n- Keep it concise — busy professionals don't read novels\n- Include a greeting and sign-off appropriate to the relationship\n- Never include placeholder brackets like [Your Name] — write a complete, ready-to-send email\n- If replying to a thread, reference specifics from prior messages to show you read them\n- Output ONLY the email body text, nothing else`,
-    messages: [{ role: 'user', content: `Subject: ${req.subject}\nRecipients: ${req.recipients.join(', ')}${threadContext}\n\nWrite the email reply.` }],
+    messages: [{ role: 'user', content: `Subject: ${req.subject}\nRecipients: ${(req.recipients || []).join(', ') || 'Not specified'}${threadContext}\n\n${req.prompt || 'Write the email.'}` }],
   });
   const text = msg.content[0].type === 'text' ? msg.content[0].text : '';
   return { draft: text.trim(), model: MODEL, tokens_used: (msg.usage?.input_tokens || 0) + (msg.usage?.output_tokens || 0) };

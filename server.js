@@ -234,4 +234,22 @@ app.post('/api/summarize', authMiddleware, rateLimitMiddleware, async (req, res)
   } catch (e) { console.error('summarize error:', e); res.status(500).json({ error: 'Internal server error', code: 'INTERNAL_ERROR' }); }
 });
 
+// Privacy Policy
+app.get('/privacy', (req, res) => {
+  res.send(`<!DOCTYPE html><html><head><title>MailPilot Privacy Policy</title><style>body{font-family:system-ui;max-width:700px;margin:40px auto;padding:0 20px;line-height:1.6;color:#333}h1{color:#4A90D9}h2{margin-top:2em}</style></head><body>
+<h1>MailPilot Privacy Policy</h1>
+<p><strong>Last updated:</strong> January 27, 2026</p>
+<h2>What We Collect</h2>
+<p>MailPilot processes email content you choose to draft or rewrite. This content is sent to our AI service (Claude by Anthropic) solely to generate your requested email text.</p>
+<h2>How We Use Your Data</h2>
+<p>Email content is used only to generate AI responses. We do not store, log, or retain your email content after processing. We do not sell or share your data with third parties.</p>
+<h2>Data Storage</h2>
+<p>User preferences (tone settings) are stored locally in your browser using Chrome's storage API. No personal data is stored on our servers.</p>
+<h2>Third-Party Services</h2>
+<p>We use Anthropic's Claude API to process AI requests. Anthropic's privacy policy applies to data processed through their service.</p>
+<h2>Contact</h2>
+<p>Questions? Email us at clawdbot043@gmail.com</p>
+</body></html>`);
+});
+
 app.listen(PORT, () => console.log(`MailPilot API running on port ${PORT}`));
